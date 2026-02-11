@@ -65,21 +65,27 @@ export default function Page() {
 
       <div style={{ lineHeight: 1.8 }}>
         {segments.map((seg, i) => {
-          const active =
-            currentTime >= seg.start && currentTime <= seg.end;
+  const active =
+    currentTime >= seg.start && currentTime <= seg.end;
 
-          return (
-            <span
-              key={i}
-              style={{
-                background: active ? "#ffe58a" : "transparent",
-                transition: "0.2s",
-              }}
-            >
-              {seg.text}{" "}
-            </span>
-          );
-        })}
+  return (
+    <span
+      key={i}
+      onClick={() => {
+        if (!audioRef.current) return;
+        audioRef.current.currentTime = seg.start;
+        audioRef.current.play();
+      }}
+      style={{
+        background: active ? "#ffe58a" : "transparent",
+        cursor: "pointer",
+        transition: "0.2s",
+      }}
+    >
+      {seg.text}{" "}
+    </span>
+  );
+})}
       </div>
     </main>
   );
