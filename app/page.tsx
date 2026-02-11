@@ -64,29 +64,52 @@ export default function Page() {
       <hr />
 
       <div style={{ lineHeight: 1.8 }}>
-        {segments.map((seg, i) => {
-  const active =
-    currentTime >= seg.start && currentTime <= seg.end;
+{segments.map((seg, i) => (
+  <div
+    key={i}
+    style={{
+      borderBottom: "1px solid #ddd",
+      padding: "12px 0",
+    }}
+  >
+    <div style={{ fontSize: 12, color: "#666" }}>
+      [{seg.start.toFixed(2)} – {seg.end.toFixed(2)}]
+      <button
+        style={{ marginLeft: 8 }}
+        onClick={() => {
+          if (!audioRef.current) return;
+          audioRef.current.currentTime = seg.start;
+          audioRef.current.play();
+        }}
+      >
+        ▶︎
+      </button>
+    </div>
 
-  return (
-    <span
-      key={i}
-      onClick={() => {
-        if (!audioRef.current) return;
-        audioRef.current.currentTime = seg.start;
-        audioRef.current.play();
-      }}
-      style={{
-        background: active ? "#ffe58a" : "transparent",
-        cursor: "pointer",
-        transition: "0.2s",
-      }}
-    >
-      {seg.text}{" "}
-    </span>
-  );
-})}
+    <div style={{ marginTop: 6 }}>
+      <strong>原文：</strong>
+      <div style={{ background: "#f5f5f5", padding: 6 }}>
+        {seg.text}
       </div>
+    </div>
+
+    <div style={{ marginTop: 6 }}>
+      <strong>修正：</strong>
+      <textarea
+        style={{ width: "100%", minHeight: 60 }}
+        value={seg.editedText ?? seg.text}
+        onChange={(e) => {
+          const updated = [...segments];
+          updated[i] = {
+            ...seg,
+            editedText: e.target.value,
+          };
+          setSegments(updated);
+        }}
+      />
+    </div>
+  </div>
+))}      </div>
     </main>
   );
 }
