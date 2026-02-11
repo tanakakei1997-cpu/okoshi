@@ -5,9 +5,9 @@ import { useRef, useState } from "react";
 type Segment = {
   start: number;
   end: number;
-  text: string;
+  text: string;        // 原文（変更不可）
+  editedText?: string; // 記者が修正する文章
 };
-
 export default function Page() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [file, setFile] = useState<File | null>(null);
